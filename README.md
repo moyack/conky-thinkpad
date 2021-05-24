@@ -7,18 +7,38 @@ Total credits to [Ngoc](https://github.com/lbngoc/conkyrc).
 # Install
 1. Download this code with this script: 
 ```shell
-$ mkdir -p ~/.conky/Thinkpad && git clone https://github.com/lbngoc/conkyrc.git ~/.conky/Thinkpad
-$ sed -i -e "s/ngoclb/$(whoami)/g" ~/.conky/Thinkpad/thinkpad-t440.conkyrc
+mkdir -p ~/.conky/Thinkpad && git clone https://github.com/moyack/conky-thinkpad.git ~/.conky/Thinkpad
 ```
+2. Create an autostart script with your favorite text editor. This is one example for KDE:
+```ini
+[Desktop Entry]
+Comment=
+Exec=(killall conky; sleep 20s; conky -q -c ~/.conky/Thinkpad/thinkpad.conkyrc &> /dev/null) &
+GenericName=
+Icon=system-run
+MimeType=
+Name=Start conky-Thinkpad
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+```
+And save it as `Init Conky.desktop`.
+If you don't use KDE, you can find an equivalent way to do an autostart file, and just ensure to set the command suggested in the **Usage**.
 
-
-Setup `thinkpad-wallpaper.png` as your desktop wallpaper.
+3. Set `thinkpad-wallpaper.png` as your desktop wallpaper.
 
 # Usage
 
 ```
-$ conky -q -c ~/.conky/Thinkpad/thinkpad-t440.conkyrc &> /dev/null
+conky -q -c ~/.conky/Thinkpad/thinkpad.conkyrc &> /dev/null
 ```
+You will notice that the script will load the parts of the script in sequence. That's all!! enjoy it :D
 
 # Screenshot
 
