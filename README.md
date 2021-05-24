@@ -44,8 +44,4 @@ You will notice that the script will load the parts of the script in sequence. T
 
 - Thinkpad
 
-![](thinkpad-screenshot.gif)
-
-- Manjaro Tree
-
-![](manjaro-tree-screenshot.png)
+![](https://raw.githubusercontent.com/moyack/conky-thinkpad/main/Screenshot.png)
