@@ -1,0 +1,150 @@
+
+conky.config = { 
+
+	background = true,
+	use_xft = true,
+	font = 'Fira Code:size=7',
+	font1 = 'Fira Code:bold:size=8',
+	xftalpha = 0.8,
+	update_interval = 1,
+	total_run_times = 0,
+	own_window = true,
+	own_window_transparent = true,
+	own_window_type = 'dock',
+	own_window_class = 'conky',
+	own_window_argb_visual = true,
+	own_window_colour = '#000000',
+	own_window_argb_value = 150,
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	double_buffer = true,
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	draw_graph_borders = true,
+	stippled_borders = 0,
+	border_width = 0,
+	default_color = 'grey',
+	default_shade_color = 'grey',
+	default_outline_color = 'black',
+	alignment = 'top_left',
+	gap_x = 230,
+	gap_y = 50,
+	no_buffers = true,
+	cpu_avg_samples = 2,
+	net_avg_samples = 2,
+	override_utf8_locale = true,
+	use_spacer = 'right',
+	maximum_width = 1600,
+	minimum_height = 600,
+	uppercase = false,
+	if_up_strictness = 'address',
+
+
+};
+
+conky.text = [[
+#leet chars: ┤┤└└┴┴┐┐││┘┘┌┌├├┬┬┼┼┴┴── ││ ▽▼△▲▵▴▾▿
+# ---General info---
+${if_match ${updates}>0}
+┌ ${color white}${font1}${nodename}${font}${color} / [ ${color red}${uid_name 1000} ${color}]
+├───────────────────────────────────────────────────────────────────────────────────────────
+│ ${color red}OS Name   :${color} ${texeci 60000 lsb_release -drcs}
+│ ${color red}Kernel    :${color} ${kernel}
+│ ${color red}Uptime    :${color} ${uptime}
+│ ${color red}GPU       :${color} ${texeci 60000 hwinfo --gfxcard | grep 'Model' | cut --fields=2 --delimiter=':' | xargs | cut -c 1-50}...
+│ ${color red}Resolution:${color} ${texeci 60000 hwinfo --monitor | grep 'Resolution' | cut --fields=2 --delimiter=':' | xargs | cut --fields=1 --delimiter=' '}
+└${endif}
+# ---Language and Keyboard---
+${if_match ${updates}>1}${voffset 20}┌ ${color white}${font1}Language:${font}${color} ${texeci 60000 cat /etc/default/locale | grep "LANG=" | cut -d"=" -f2}
+├────────────────────────────────────────────────────────────────
+│ ${color red}Model:${color} ${texeci 60000 hwinfo --keyboard | grep " Model" | cut -d":" -f2} / ${texeci 60000 hwinfo --keyboard | grep "XkbModel" | cut -d":" -f2}
+└${endif}
+# ---CPU---
+${if_match ${updates}>2}${voffset -180}
+${goto 650}${color red}${font1}CPU: ${color white}${cpu cpu0}%${alignr}${offset -5}${color red}${texeci 60000 cat /proc/cpuinfo|grep 'model name'|sed -e 's/model name.*: //'| uniq | cut -c 1-25}${font}${color}
+${goto 650}${voffset 2}${cpubar cpu0 10,250}${voffset 5}
+${goto 650}CPU1: ${cpu cpu1}%${goto 728}${freq_g 1}Ghz${goto 780}CPU2: ${cpu cpu2}%${goto 858}${freq_g 2}Ghz
+${goto 650}${cpugraph cpu1 40,120 06E9F8 2804FA -l}${offset 10}${cpugraph cpu2 40,120 06E9F8 2804FA -l}
+${goto 650}CPU3: ${cpu cpu3}%${goto 728}${freq_g 3}Ghz${goto 780}CPU4: ${cpu cpu4}%${goto 858}${freq_g 4}Ghz
+${goto 650}${cpugraph cpu3 40,120 06E9F8 2804FA -l}${offset 10}${cpugraph cpu4 40,120 06E9F8 2804FA -l}
+${goto 650}${color red}Process Name${goto 788}PID    CPU%    MEM%${color}
+${goto 650}${top name 1}   ${top pid 1}  ${top cpu 1}  ${top mem 1}
+${goto 650}${top name 2}   ${top pid 2}  ${top cpu 2}  ${top mem 2}
+${goto 650}${top name 3}   ${top pid 3}  ${top cpu 3}  ${top mem 3}
+${goto 650}${top name 4}   ${top pid 4}  ${top cpu 4}  ${top mem 4}
+${goto 650}${top name 5}   ${top pid 5}  ${top cpu 5}  ${top mem 5}
+${goto 650}──────────────────────────────────────────
+${goto 650}${color red}Processes:${color} ${processes}${goto 748}${color red}Threads: ${color}${running_threads}
+${goto 530}──────────────────────────────────────────────────────────────${endif}
+# ---TEMPERATURE---
+${if_match ${updates}>3}${voffset -72}┌ ${color white}${font1}Temperature${color}${font}
+│ ${color red}Temp  :${color} ${exec sensors | grep "Package id" | cut -c 16-100}
+│ ${color red}Core 0:${color} ${exec sensors | grep "Core 0" | cut -c 16-100}
+│ ${color red}Core 1:${color} ${exec sensors | grep "Core 1" | cut -c 16-100}
+│ ${color red}ACPI  :${color} ${exec sensors | grep "temp1" | cut -c 15-100}
+│ ${color red}Fan   :${color} ${exec sensors | grep "fan1" | cut -d" " -f9 | cut -d" " -f1} RPM
+└────────────────────────────────────────────────────────────${endif}
+# ---MEMORY---
+${if_match ${updates}>4}${voffset 10}${goto 470}───────────────────────────── ${color red}${font1}Memory${alignr}${offset -5}${color white}RAM: ${memmax}${color}${font}
+${goto 650}${memgraph 40,250 06E9F8 2804FA -t}
+${goto 650}${color white}Memory in use:${color} ${mem} (${memperc}%)
+${goto 650}${color white}Memory free  :${color} ${memfree} / ${memeasyfree}
+${goto 650}${color white}Buffers      :${color} ${buffers}
+${goto 650}${color white}Cache        :${color} ${cached}
+${goto 650}${color red}SWAP:${color} ${swapmax} ${swapbar 7,120} [${swapperc}%]${endif}
+# ---NETWORK---
+${if_match ${updates}>5}${voffset -115}┌ ${color white}${font1}Ethernet: ${color}${exec nmcli device show enp0s25 | grep 'GENERAL.CONNECTION' | cut --fields=2 --delimiter=':' | xargs}${font}
+├────────────────────────────────────────────────────────────
+│ ${color red}IP:${color white} ${addr enp0s25}
+│ ${goto 235}${color white}Send   : ${color}${upspeed enp0s25}
+│ ${goto 235}${color white}Receive: ${color}${downspeed enp0s25}
+└─────────────────────────────────────
+${offset 12}${voffset -38}${upspeedgraph enp0s25 20,100 06E9F8 2804FA}  ${downspeedgraph enp0s25 20,100 FFFF00 DD3A21}${endif}
+${if_match ${updates}>6}
+┌ ${color white}${font1}Wifi: ${color}${wireless_essid wlp3s0}${font}
+├───────────────────────────────────────────────────────────────────────────────
+│ ${color red}IP:${color white} ${addr wlp3s0}${goto 128}${color red}Bitrate: ${color}${wireless_bitrate wlp3s0}
+│ ${goto 235}${color white}Send   : ${color}${upspeed wlp3s0}
+│ ${goto 235}${color white}Receive: ${color}${downspeed wlp3s0}
+│ ${color red}Link Quality : ${color}${wireless_link_bar 4,60 wlp3s0}${goto 170}${wireless_link_qual_perc wlp3s0}%
+│ ${color red}Access Point : ${color}${wireless_ap wlp3s0}
+│ ${color red}Wireless Mode: ${color}${wireless_mode wlp3s0}
+└─────────────────────────────────────
+${offset 12}${voffset -76}${upspeedgraph wlp3s0 20,100 06E9F8 2804FA}  ${downspeedgraph wlp3s0 20,100 FFFF00 DD3A21}
+${voffset -100}${alignr}${goto 540}│
+${alignr}${goto 540}│
+${alignr}${goto 540}│
+${alignr}${goto 540}│
+${alignr}${goto 474}───────────┘${endif}
+# ---Volumen---
+${if_match ${updates}>7}${voffset 78}${goto 400}│
+┌ ${color white}${font1}Volume${color}: ${exec pulseaudio-ctl full-status | cut --fields=-1 --delimiter=' '}%${font}${goto 400}│
+├─────────────────────────────────────────────────────────────────┘
+│ ${color red}Model: ${color}${texeci 60000 hwinfo --sound | grep 'Model' | cut --fields=2 --delimiter=':' | xargs | cut -c 1-50}...
+└${endif}
+# ---Disks---
+${if_match ${updates}>8}${voffset -118}${goto 550}┌─────────────── ${color red}${font1}Disk1:${color white} </> (${fs_type /})${color}${alignr}${offset -5}[ ${fs_size /}]${font}
+${goto 650}${color white}Disk usage: ${fs_bar 5,68 /}${goto 791}┬${goto 800}${color}${fs_used /} Used
+${goto 722}${color white}${fs_used_perc /}%${goto 791}└${goto 800}${color}${fs_free /} Free
+${goto 800}${color white}I/O  : ${color}${diskio /dev/sda}
+${goto 800}${color white}Read : ${color}${diskio_read /dev/sda}
+${goto 800}${color white}Write: ${color}${diskio_write /dev/sda}
+${goto 650}${voffset -38}${diskiograph /dev/sda 30,140 06E9F8 2804FA -l}${endif}
+${if_match ${updates}>9}${goto 550}│
+${goto 550}└─────────────── ${color red}${font1}Disk2:${color white} </home> (${fs_type /home})${color}${alignr}${offset -5}[ ${fs_size /home}]${font}
+${goto 650}${color white}Disk usage: ${fs_bar 5,68 /home}${goto 791}┬${goto 800}${color}${fs_used /home} Used
+${goto 722}${color white}${fs_used_perc /home}%${goto 791}└${goto 800}${color}${fs_free /home} Free
+${goto 800}${color white}I/O  : ${color}${diskio /dev/sdb}
+${goto 800}${color white}Read : ${color}${diskio_read /dev/sdb}
+${goto 800}${color white}Write: ${color}${diskio_write /dev/sdb}
+${goto 650}${voffset -38}${diskiograph /dev/sdb 30,140 06E9F8 2804FA -l}${endif}
+# ---Battery---
+${if_match ${updates}>10}${voffset -60}${goto 508}│
+┌ ${color white}${font1}Battery${color}${font}${goto 508}│
+├───────────────────────────────────────────────────────────────────────────────────┘
+│ ${color red}Status       :${color} ${battery_bar 5,60 BAT0} ${battery BAT0}
+│ ${color red}Charging time:${color} ${battery_time BAT0}
+│ ${color red}Voltage      :${color} ${texeci 5 upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep 'voltage:' | cut --fields=2 --delimiter=':' | xargs}
+│ ${color red}Energy       :${color} ${texeci 5 upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep 'energy:' | cut --fields=2 --delimiter=':' | xargs}
+└${endif}
+]];
