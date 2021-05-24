@@ -29,7 +29,7 @@ X-KDE-SubstituteUID=false
 X-KDE-Username=
 ```
 And save it as `Init Conky.desktop`.
-If you don't use KDE, you can find an equivalent way to do an autostart file, and just ensure to set the command suggested in the **Usage**.
+If you don't use KDE, you can find an equivalent way to do an autostart file, and just ensure to set the command suggested in the [**Usage**](https://github.com/moyack/conky-thinkpad/blob/main/README.md#usage).
 
 3. Set `thinkpad-wallpaper.png` as your desktop wallpaper.
 
